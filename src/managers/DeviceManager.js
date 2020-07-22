@@ -45,6 +45,7 @@ class DeviceManager {
     const attributes = await this._deviceAttributeRepository.getByID(deviceID);
 
     if (!attributes) {
+      console.log('No attributes found. Running updateByID');
       return await this._deviceAttributeRepository.updateByID(deviceID, {
         deviceID,
         ownerID: userID,

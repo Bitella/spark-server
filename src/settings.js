@@ -21,11 +21,23 @@
 
 import path from 'path';
 
+const randHex = len => {
+  const maxlen = 8;
+  const min = 16 ** Math.min(len, maxlen) - 1;
+  const max = 16 ** Math.min(len, maxlen) - 1;
+  const n = Math.floor(Math.random() * (max - min + 1)) + min;
+  let r = n.toString(16);
+  while (r.length < len) {
+    r += randHex(len - maxlen);
+  }
+  return r;
+};
+
 /* eslint-disable sorting/sort-object-props */
 export default {
   BUILD_DIRECTORY: path.join(process.cwd(), 'data/build'),
-  DEFAULT_ADMIN_PASSWORD: 'adminPassword',
-  DEFAULT_ADMIN_USERNAME: '__admin__',
+  DEFAULT_ADMIN_PASSWORD: 'ojna',
+  DEFAULT_ADMIN_USERNAME: 'me@ojnatan.se',
   DEVICE_DIRECTORY: path.join(process.cwd(), 'data/deviceKeys'),
   ENABLE_SYSTEM_FIRWMARE_AUTOUPDATES: true,
   FIRMWARE_DIRECTORY: path.join(process.cwd(), 'data/knownApps'),
@@ -52,11 +64,27 @@ export default {
   SHOW_VERBOSE_DEVICE_LOGS: false,
 
   TCP_DEVICE_SERVER_CONFIG: {
-    HOST: 'localhost',
+    HOST: '192.168.1.101',
     PORT: 5683,
   },
   // Override template parameters in webhooks with this object
   WEBHOOK_TEMPLATE_PARAMETERS: {
     // SOME_AUTH_TOKEN: '12312312',
+  },
+  ID_GENERATOR() {
+    /* const prefix = 'faff'
+    const number = parseInt(Math.random()*99999999999999999999, 1) + "";
+    const id = `${prefix}${number}`;*/
+
+    try {
+      console.log('RAND HEX', randHex(24));
+    } catch (err) {
+      console.log(err);
+    }
+    const id = randHex(24);
+    console.log({ id });
+    return new Promise((resolve, reject) => {
+      resolve(id);
+    });
   },
 };

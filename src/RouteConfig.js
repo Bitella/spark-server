@@ -123,6 +123,7 @@ export default (
           controllerInstance.request = request;
           controllerInstance.response = response;
           controllerInstance.user = (request: any).user;
+          controllerInstance.settings = settings;
 
           // Take access token out if it's posted.
           const {

@@ -67,6 +67,11 @@ export default (
   );
   app.use(setCORSHeaders);
 
+  app.use((req, res, next) => {
+    console.log(req.body);
+    next();
+  });
+
   routeConfig(
     app,
     container,

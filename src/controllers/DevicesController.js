@@ -15,6 +15,9 @@ import deviceToAPI from '../lib/deviceToAPI';
 import Logger from '../lib/logger';
 const logger = Logger.createModuleLogger(module);
 
+// const myID = '21003a001447363336383438';
+const myID = '21003a001447363336383432';
+
 type CompileConfig = {
   platform_id?: string,
   product_id?: string,
@@ -32,14 +35,32 @@ class DevicesController extends Controller {
   @httpVerb('post')
   @route('/v1/devices')
   async claimDevice(postBody: { id: string }): Promise<*> {
+    let newID;
     let deviceID = postBody.id;
+
     try {
-      deviceID = await this._deviceManager.getDeviceID(deviceID);
+      if (!deviceID) {
+        newID = await this.settings.ID_GENERATOR();
+        deviceID = newID;
+        console.log({ deviceID });
+        // deviceID = myID;
+      } else {
+        deviceID = await this._deviceManager.getDeviceID(deviceID);
+        console.log({ deviceID });
+      }
     } catch (_) {
       // We want to ignore the error and let the `claimDevice` call throw the exception
     }
 
     await this._deviceManager.claimDevice(deviceID, this.user.id);
+
+    // if (deviceID === myID) {
+    if (deviceID === newID) {
+      return this.ok({
+        device_id: deviceID,
+        ok: true,
+      });
+    }
 
     return this.ok({ ok: true });
   }

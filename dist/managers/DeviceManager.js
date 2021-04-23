@@ -63,53 +63,54 @@ var DeviceManager = function DeviceManager(deviceAttributeRepository, deviceFirm
               attributes = _context.sent;
 
               if (attributes) {
-                _context.next = 7;
+                _context.next = 8;
                 break;
               }
 
-              _context.next = 6;
+              console.log('No attributes found. Running updateByID');
+              _context.next = 7;
               return _this._deviceAttributeRepository.updateByID(deviceID, {
                 deviceID: deviceID,
                 ownerID: userID,
                 registrar: userID
               });
 
-            case 6:
+            case 7:
               return _context.abrupt('return', _context.sent);
 
-            case 7:
+            case 8:
               if (!(attributes.ownerID && attributes.ownerID !== userID)) {
-                _context.next = 9;
+                _context.next = 10;
                 break;
               }
 
               throw new _HttpError2.default('The device belongs to someone else.');
 
-            case 9:
+            case 10:
               if (!(attributes.ownerID && attributes.ownerID === userID)) {
-                _context.next = 11;
+                _context.next = 12;
                 break;
               }
 
               throw new _HttpError2.default('The device is already claimed.');
 
-            case 11:
-              _context.next = 13;
+            case 12:
+              _context.next = 14;
               return _this._eventPublisher.publishAndListenForResponse({
                 context: { attributes: { ownerID: userID }, deviceID: deviceID },
                 name: _sparkProtocol.SPARK_SERVER_EVENTS.UPDATE_DEVICE_ATTRIBUTES
               });
 
-            case 13:
-              _context.next = 15;
+            case 14:
+              _context.next = 16;
               return _this._deviceAttributeRepository.updateByID(deviceID, {
                 ownerID: userID
               });
 
-            case 15:
+            case 16:
               return _context.abrupt('return', _context.sent);
 
-            case 16:
+            case 17:
             case 'end':
               return _context.stop();
           }

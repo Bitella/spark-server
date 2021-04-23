@@ -20,18 +20,7 @@
  */
 
 import path from 'path';
-
-const randHex = len => {
-  const maxlen = 8;
-  const min = 16 ** Math.min(len, maxlen) - 1;
-  const max = 16 ** Math.min(len, maxlen) - 1;
-  const n = Math.floor(Math.random() * (max - min + 1)) + min;
-  let r = n.toString(16);
-  while (r.length < len) {
-    r += randHex(len - maxlen);
-  }
-  return r;
-};
+import randHex from './lib/randHex';
 
 /* eslint-disable sorting/sort-object-props */
 export default {
@@ -72,17 +61,7 @@ export default {
     // SOME_AUTH_TOKEN: '12312312',
   },
   ID_GENERATOR() {
-    /* const prefix = 'faff'
-    const number = parseInt(Math.random()*99999999999999999999, 1) + "";
-    const id = `${prefix}${number}`;*/
-
-    try {
-      console.log('RAND HEX', randHex(24));
-    } catch (err) {
-      console.log(err);
-    }
-    const id = randHex(24);
-    console.log({ id });
+    const id = `9${randHex(23)}`;
     return new Promise((resolve, reject) => {
       resolve(id);
     });

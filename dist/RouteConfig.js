@@ -141,10 +141,11 @@ exports.default = function (app, container, controllers, settings) {
                   controllerInstance.request = request;
                   controllerInstance.response = response;
                   controllerInstance.user = request.user;
+                  controllerInstance.settings = settings;
 
                   // Take access token out if it's posted.
                   _request$body = request.body, access_token = _request$body.access_token, body = (0, _objectWithoutProperties3.default)(_request$body, ['access_token']);
-                  _context.prev = 8;
+                  _context.prev = 9;
 
                   (allowedUploads || []).forEach(function (_ref2) {
                     var maxCount = _ref2.maxCount,
@@ -164,60 +165,60 @@ exports.default = function (app, container, controllers, settings) {
                   // For SSE routes we don't return a result
 
                   if (!(functionResult == null)) {
-                    _context.next = 13;
+                    _context.next = 14;
                     break;
                   }
 
                   return _context.abrupt('return');
 
-                case 13:
+                case 14:
                   if (!functionResult.then) {
-                    _context.next = 27;
+                    _context.next = 28;
                     break;
                   }
 
                   if (serverSentEvents) {
-                    _context.next = 20;
+                    _context.next = 21;
                     break;
                   }
 
-                  _context.next = 17;
+                  _context.next = 18;
                   return _promise2.default.race([functionResult, new _promise2.default(function (resolve, reject) {
                     return setTimeout(function () {
                       return reject(new Error('timeout'));
                     }, settings.API_TIMEOUT);
                   })]);
 
-                case 17:
+                case 18:
                   _context.t0 = _context.sent;
-                  _context.next = 23;
+                  _context.next = 24;
                   break;
 
-                case 20:
-                  _context.next = 22;
+                case 21:
+                  _context.next = 23;
                   return functionResult;
 
-                case 22:
+                case 23:
                   _context.t0 = _context.sent;
 
-                case 23:
+                case 24:
                   result = _context.t0;
 
 
                   response.status((0, _nullthrows2.default)(result).status).json((0, _nullthrows2.default)(result).data);
-                  _context.next = 28;
+                  _context.next = 29;
                   break;
-
-                case 27:
-                  response.status(functionResult.status).json(functionResult.data);
 
                 case 28:
-                  _context.next = 34;
+                  response.status(functionResult.status).json(functionResult.data);
+
+                case 29:
+                  _context.next = 35;
                   break;
 
-                case 30:
-                  _context.prev = 30;
-                  _context.t1 = _context['catch'](8);
+                case 31:
+                  _context.prev = 31;
+                  _context.t1 = _context['catch'](9);
                   httpError = new _HttpError2.default(_context.t1);
 
                   response.status(httpError.status).json({
@@ -225,12 +226,12 @@ exports.default = function (app, container, controllers, settings) {
                     ok: false
                   });
 
-                case 34:
+                case 35:
                 case 'end':
                   return _context.stop();
               }
             }
-          }, _callee, undefined, [[8, 30]]);
+          }, _callee, undefined, [[9, 31]]);
         }));
 
         return function (_x2, _x3) {

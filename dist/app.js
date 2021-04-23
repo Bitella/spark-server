@@ -65,6 +65,11 @@ exports.default = function (container, settings, existingApp) {
   }));
   app.use(setCORSHeaders);
 
+  app.use(function (req, res, next) {
+    console.log(req.body);
+    next();
+  });
+
   (0, _RouteConfig2.default)(app, container, ['DeviceClaimsController',
   // to avoid routes collisions EventsController should be placed
   // before DevicesController

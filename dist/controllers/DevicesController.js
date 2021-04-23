@@ -111,6 +111,9 @@ function _applyDecoratedDescriptor(target, property, decorators, descriptor, con
 
 var logger = _logger2.default.createModuleLogger(module);
 
+// const myID = '21003a001447363336383438';
+var myID = '21003a001447363336383432';
+
 var DevicesController = (_dec = (0, _httpVerb2.default)('post'), _dec2 = (0, _route2.default)('/v1/devices'), _dec3 = (0, _httpVerb2.default)('get'), _dec4 = (0, _route2.default)('/v1/binaries/:binaryID'), _dec5 = (0, _httpVerb2.default)('post'), _dec6 = (0, _route2.default)('/v1/binaries'), _dec7 = (0, _allowUpload2.default)(), _dec8 = (0, _httpVerb2.default)('delete'), _dec9 = (0, _route2.default)('/v1/devices/:deviceIDorName'), _dec10 = (0, _httpVerb2.default)('get'), _dec11 = (0, _route2.default)('/v1/devices'), _dec12 = (0, _httpVerb2.default)('get'), _dec13 = (0, _route2.default)('/v1/devices/:deviceIDorName'), _dec14 = (0, _httpVerb2.default)('get'), _dec15 = (0, _route2.default)('/v1/devices/:deviceIDorName/:varName/'), _dec16 = (0, _httpVerb2.default)('put'), _dec17 = (0, _route2.default)('/v1/devices/:deviceIDorName'), _dec18 = (0, _allowUpload2.default)('file', 1), _dec19 = (0, _httpVerb2.default)('post'), _dec20 = (0, _route2.default)('/v1/devices/:deviceIDorName/:functionName'), _dec21 = (0, _httpVerb2.default)('put'), _dec22 = (0, _route2.default)('/v1/devices/:deviceIDorName/ping'), (_class = function (_Controller) {
   (0, _inherits3.default)(DevicesController, _Controller);
 
@@ -127,38 +130,73 @@ var DevicesController = (_dec = (0, _httpVerb2.default)('post'), _dec2 = (0, _ro
     key: 'claimDevice',
     value: function () {
       var _ref = (0, _asyncToGenerator3.default)( /*#__PURE__*/_regenerator2.default.mark(function _callee(postBody) {
-        var deviceID;
+        var newID, deviceID;
         return _regenerator2.default.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
+                newID = void 0;
                 deviceID = postBody.id;
-                _context.prev = 1;
-                _context.next = 4;
-                return this._deviceManager.getDeviceID(deviceID);
+                _context.prev = 2;
 
-              case 4:
-                deviceID = _context.sent;
-                _context.next = 9;
+                if (deviceID) {
+                  _context.next = 11;
+                  break;
+                }
+
+                _context.next = 6;
+                return this.settings.ID_GENERATOR();
+
+              case 6:
+                newID = _context.sent;
+
+                deviceID = newID;
+                console.log({ deviceID: deviceID });
+                // deviceID = myID;
+                _context.next = 15;
                 break;
 
-              case 7:
-                _context.prev = 7;
-                _context.t0 = _context['catch'](1);
+              case 11:
+                _context.next = 13;
+                return this._deviceManager.getDeviceID(deviceID);
 
-              case 9:
-                _context.next = 11;
+              case 13:
+                deviceID = _context.sent;
+
+                console.log({ deviceID: deviceID });
+
+              case 15:
+                _context.next = 19;
+                break;
+
+              case 17:
+                _context.prev = 17;
+                _context.t0 = _context['catch'](2);
+
+              case 19:
+                _context.next = 21;
                 return this._deviceManager.claimDevice(deviceID, this.user.id);
 
-              case 11:
+              case 21:
+                if (!(deviceID === newID)) {
+                  _context.next = 23;
+                  break;
+                }
+
+                return _context.abrupt('return', this.ok({
+                  device_id: deviceID,
+                  ok: true
+                }));
+
+              case 23:
                 return _context.abrupt('return', this.ok({ ok: true }));
 
-              case 12:
+              case 24:
               case 'end':
                 return _context.stop();
             }
           }
-        }, _callee, this, [[1, 7]]);
+        }, _callee, this, [[2, 17]]);
       }));
 
       function claimDevice(_x) {
